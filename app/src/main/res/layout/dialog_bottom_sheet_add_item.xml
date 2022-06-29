@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#91000000">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="295dp"
+        android:background="@drawable/bottom_sheet_style"
+        android:backgroundTint="@null"
+        android:padding="12dp">
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textField"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="371dp"
+            android:layout_height="62dp"
+            app:expandedHintEnabled="false"
+            android:layout_marginBottom="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/textField1"
+            app:layout_constraintEnd_toEndOf="@+id/textField1"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/typeCurrencyType"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="Название валюты"
+                android:textAppearance="@style/currencyStyle" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textField1"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="371dp"
+            android:layout_height="62dp"
+            app:expandedHintEnabled="false"
+            android:layout_marginBottom="20dp"
+            app:layout_constraintBottom_toTopOf="@id/selectCurrencyFlag"
+            app:layout_constraintEnd_toEndOf="@+id/selectCurrencyFlag">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/typeCurrencyCost"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="Кол. тенге в валюте"
+                android:textAppearance="@style/currencyStyle" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/selectCurrencyFlag"
+            android:layout_width="214dp"
+            android:layout_height="51dp"
+            android:layout_marginBottom="4dp"
+            android:backgroundTint="#1789DB"
+            android:text="Выбрать флаг"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toTopOf="@+id/addNewCurrency"
+            app:layout_constraintEnd_toEndOf="@+id/addNewCurrency" />
+
+        <Button
+            android:id="@+id/addNewCurrency"
+            android:layout_width="361dp"
+            android:layout_height="51dp"
+            android:backgroundTint="#1789DB"
+            android:text="Добавить"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

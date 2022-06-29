@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/personalPageFragment"
+        android:icon="@drawable/vector"
+        android:title=""
+        />
+    <item
+        android:id="@+id/moviesFragment"
+        android:icon="@drawable/shape"
+        android:title="" />
+    <item
+        android:id="@+id/convertorFragment"
+        android:icon="@drawable/vector__2_"
+        android:title="" />
+    <item
+        android:id="@+id/searchFragment"
+        android:icon="@drawable/search"
+        android:title="" />
+    <item
+        android:id="@+id/translatorFragment"
+        android:icon="@drawable/account_1"
+        android:title="" />
+</menu>

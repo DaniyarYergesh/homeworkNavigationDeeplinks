@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/moviesFragment">
+
+    <fragment
+        android:id="@+id/personalPageFragment"
+        android:name="com.example.homework_recyclerview.presentation.fragments.personal_page.PersonalPage"
+        android:label="Main_Fragment2_mainPage"
+        tools:layout="@layout/layout_fragment_personal_page"/>
+    <fragment
+        android:id="@+id/moviesFragment"
+        android:name="com.example.homework_recyclerview.presentation.fragments.movies.Movies"
+        android:label="Fragment3_Main"
+        tools:layout="@layout/layout_fragment_movies">
+        <action
+            android:id="@+id/action_moviesFragment_to_fragmentMovieDetails"
+            app:destination="@id/fragmentMovieDetails"
+            app:enterAnim="@anim/shake_false" />
+        <deepLink app:uri="https://www.google.com" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/convertorFragment"
+        android:name="com.example.homework_recyclerview.presentation.fragments.converter.ConvertorFragment"
+        android:label="Main_Fragment1"
+        tools:layout="@layout/layout_fragment_convertor"/>
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.example.homework_recyclerview.presentation.fragments.search.SearchFragment"
+        android:label="fragment_search"
+        tools:layout="@layout/fragment_search" />
+    <fragment
+        android:id="@+id/translatorFragment"
+        android:name="com.example.homework_recyclerview.presentation.fragments.translator.TranslatorFragment"
+        android:label="fragment_translator"
+        tools:layout="@layout/fragment_translator" />
+    <fragment
+        android:id="@+id/fragmentMovieDetails"
+        android:name="com.example.homework_recyclerview.presentation.fragments.movies.FragmentMovieDetails"
+        android:label="FragmentMovieDetails"
+        tools:layout="@layout/layout_fragment_movie_details">
+    </fragment>
+
+</navigation>
