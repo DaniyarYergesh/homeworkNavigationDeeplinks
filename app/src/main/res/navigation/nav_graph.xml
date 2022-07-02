@@ -9,7 +9,10 @@
         android:id="@+id/personalPageFragment"
         android:name="com.example.homework_recyclerview.presentation.fragments.personal_page.PersonalPage"
         android:label="Main_Fragment2_mainPage"
-        tools:layout="@layout/layout_fragment_personal_page"/>
+        tools:layout="@layout/layout_fragment_personal_page">
+        <deepLink app:uri="https://www.deeplinks1.com" />
+    </fragment>
+
     <fragment
         android:id="@+id/moviesFragment"
         android:name="com.example.homework_recyclerview.presentation.fragments.movies.Movies"
@@ -19,24 +22,34 @@
             android:id="@+id/action_moviesFragment_to_fragmentMovieDetails"
             app:destination="@id/fragmentMovieDetails"
             app:enterAnim="@anim/shake_false" />
-        <deepLink app:uri="https://www.google.com" />
+        <deepLink app:uri="deeplinks2.com" />
     </fragment>
 
     <fragment
         android:id="@+id/convertorFragment"
         android:name="com.example.homework_recyclerview.presentation.fragments.converter.ConvertorFragment"
         android:label="Main_Fragment1"
-        tools:layout="@layout/layout_fragment_convertor"/>
+        tools:layout="@layout/layout_fragment_convertor">
+        <deepLink app:uri="https://www.deeplinks3.com" />
+    </fragment>
+
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.example.homework_recyclerview.presentation.fragments.search.SearchFragment"
         android:label="fragment_search"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search" >
+        <deepLink app:uri="https://www.deeplinks4.com" />
+    </fragment>
+
     <fragment
         android:id="@+id/translatorFragment"
         android:name="com.example.homework_recyclerview.presentation.fragments.translator.TranslatorFragment"
         android:label="fragment_translator"
-        tools:layout="@layout/fragment_translator" />
+        tools:layout="@layout/fragment_translator" >
+        <deepLink app:uri="https://www.deeplinks5.com" />
+
+    </fragment>
+
     <fragment
         android:id="@+id/fragmentMovieDetails"
         android:name="com.example.homework_recyclerview.presentation.fragments.movies.FragmentMovieDetails"

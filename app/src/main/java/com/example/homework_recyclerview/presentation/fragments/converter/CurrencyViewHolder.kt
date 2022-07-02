@@ -2,7 +2,7 @@ package com.example.homework_recyclerview.presentation.fragments.converter
 
 import androidx.recyclerview.widget.RecyclerView
 import com.example.convertor.databinding.ItemCurrencyRvBinding
-import com.example.homework_recyclerview.Currency
+import com.example.homework_recyclerview.domain.repository.Currency
 
 class CurrencyViewHolder(
     private var function: (Currency, Int) -> Unit,

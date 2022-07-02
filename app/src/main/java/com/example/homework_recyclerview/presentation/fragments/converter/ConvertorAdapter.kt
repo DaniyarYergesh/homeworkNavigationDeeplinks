@@ -6,16 +6,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.convertor.R
 import com.example.convertor.databinding.ItemCurrencyRvBinding
 import com.example.homework_recyclerview.*
-import com.example.homework_recyclerview.Currency
+import com.example.homework_recyclerview.domain.repository.Currency
 import com.example.homework_recyclerview.domain.repository.Parent
 
-class Adapter(
+class ConvertorAdapter(
     private val clickListener: () -> Unit,
     private val function: (Currency, Int) -> Unit
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     val data = mutableListOf<Parent>()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return when (viewType) {
@@ -35,23 +36,14 @@ class Adapter(
         }
     }
 
-    override fun getItemViewType(position: Int): Int =
-        when (data[position]) {
-            is Currency -> R.layout.item_currency_rv
-            is Add1 -> R.layout.item_btn_add_rv
-            else -> R.layout.item_currency_rv
-        }
-
-    override fun getItemCount(): Int = data.size
-
-
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is CurrencyViewHolder -> holder.bind(data[position] as Currency, position)
-            is AddButtonViewHolder -> holder.bind(data[position] as Add1)
+            is AddButtonViewHolder -> holder.bind(data[position] as Add)
         }
     }
 
+    override fun getItemCount(): Int = data.size
 
     fun setItems(list: List<Parent>) {
         data.clear()
@@ -70,7 +62,7 @@ class Adapter(
         notifyDataSetChanged()
     }
 
-    fun deleteCurrency(currency: Currency, position: Int) {
+    fun deleteCurrency(currency: Currency) {
         data.remove(currency)
         notifyDataSetChanged()
     }
@@ -85,7 +77,6 @@ class Adapter(
         }
         notifyItemMoved(from, to)
     }
-
 
     fun sortByName() {
         val data1 = data.dropLast(1) as MutableList<Currency>
@@ -131,3 +122,11 @@ class Adapter(
     }
 
 }
+//
+//object CustomerModelCallback : DiffUtil.ItemCallback<Parent>() {
+//    override fun areItemsTheSame(oldItem: Parent, newItem: Parent): Boolean =
+//        oldItem.id == newItem.id
+//
+//    override fun areContentsTheSame(oldItem: Parent, newItem: Parent): Boolean =
+//        oldItem == newItem
+//}

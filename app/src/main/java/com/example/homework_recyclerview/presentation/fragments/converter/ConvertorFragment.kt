@@ -14,8 +14,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import com.example.convertor.R
 import com.example.convertor.databinding.LayoutFragmentConvertorBinding
-import com.example.homework_recyclerview.Add1
-import com.example.homework_recyclerview.Currency
+import com.example.homework_recyclerview.Add
+import com.example.homework_recyclerview.domain.repository.Currency
 import com.example.homework_recyclerview.domain.repository.Parent
 import com.example.homework_recyclerview.presentation.fragments.converter.bottomSheet_Dialog.BottomSheetDialog
 import com.example.homework_recyclerview.presentation.fragments.converter.bottomSheet_Dialog.SelectCurrencyBottomSheet
@@ -35,7 +35,7 @@ class ConvertorFragment : Fragment(), DeleteDialogCallback,
     private var positionOfDeletedItem: Int? = null
     private lateinit var toolbar: androidx.appcompat.widget.Toolbar
     private var chosenIndex = -1
-    private var adapter: Adapter? = null
+    private var adapter: ConvertorAdapter? = null
     private var layoutManager: LinearLayoutManager? = null
     private lateinit var currencyList: List<Parent>
     private lateinit var kzCurrency: TextInputEditText
@@ -68,7 +68,7 @@ class ConvertorFragment : Fragment(), DeleteDialogCallback,
             Currency(0, "Доллары, США", R.drawable.image_1_2, 90),
             Currency(0, "Лира, Турция", R.drawable.image_1_3, 150),
             Currency(0, "Евро, EC", R.drawable.image_1_4, 60),
-            Add1("Добавить", R.drawable.path837)
+            Add("Добавить", R.drawable.path837)
         )
 
         val myLambda: () -> Unit =
@@ -80,7 +80,7 @@ class ConvertorFragment : Fragment(), DeleteDialogCallback,
             deletedCurrency = item
             positionOfDeletedItem = position
 
-            toolbar.setTitle("$position Item Selected")
+            toolbar.title = "$position Item Selected"
             toolbar.setBackgroundColor(
                 ContextCompat.getColor(
                     requireContext(),
@@ -90,11 +90,11 @@ class ConvertorFragment : Fragment(), DeleteDialogCallback,
             toolbar.menu.findItem(R.id.menu_del).isVisible = true
             toolbar.menu.findItem(R.id.sorting_by).isVisible = false
             toolbar.menu.findItem(R.id.drop_sorting).isVisible = false
-            Log.i("MainActivity", "${deletedCurrency}")
+            Log.i("MainActivity", "$deletedCurrency")
 
         }
 
-        adapter = com.example.homework_recyclerview.presentation.fragments.converter.Adapter(
+        adapter = ConvertorAdapter(
             myLambda,
             myLambda2
         )
@@ -133,7 +133,7 @@ class ConvertorFragment : Fragment(), DeleteDialogCallback,
 
     }
 
-    lateinit var dialog: DialogFragment
+    private lateinit var dialog: DialogFragment
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
@@ -177,9 +177,9 @@ class ConvertorFragment : Fragment(), DeleteDialogCallback,
 
     }
 
-    fun scrollBottom(n: Int) {
+    private fun scrollBottom(n: Int) {
         val smoothScroller = object : LinearSmoothScroller(requireContext()) {
-            override fun getVerticalSnapPreference(): Int = LinearSmoothScroller.SNAP_TO_START
+            override fun getVerticalSnapPreference(): Int = SNAP_TO_START
         }
         smoothScroller.targetPosition = n
         layoutManager?.startSmoothScroll(smoothScroller) // плавная прокрутка
@@ -188,7 +188,7 @@ class ConvertorFragment : Fragment(), DeleteDialogCallback,
     private fun deleteItems() {
         dialog = DeleteDialogFragment()
         dialog.show(childFragmentManager, null)
-        toolbar.setTitle("Converter")
+        toolbar.title = "Converter"
         toolbar.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
         toolbar.menu.findItem(R.id.menu_del).isVisible = false
         toolbar.menu.findItem(R.id.sorting_by).isVisible = true
@@ -196,7 +196,7 @@ class ConvertorFragment : Fragment(), DeleteDialogCallback,
     }
 
     override fun onDeleteButton() {
-        adapter?.deleteCurrency(deletedCurrency!!, positionOfDeletedItem!!)
+        adapter?.deleteCurrency(deletedCurrency!!)
         Snackbar.make(
             binding.recyclerView,
             "Item Deleted",

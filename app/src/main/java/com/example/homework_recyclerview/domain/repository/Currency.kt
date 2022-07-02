@@ -1,4 +1,4 @@
-package com.example.homework_recyclerview
+package com.example.homework_recyclerview.domain.repository
 
 import androidx.annotation.DrawableRes
 import com.example.homework_recyclerview.domain.repository.Parent

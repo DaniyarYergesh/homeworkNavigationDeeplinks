@@ -4,7 +4,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 
 
-class DragDropMove(private var adapter: com.example.homework_recyclerview.presentation.fragments.converter.Adapter) :
+class DragDropMove(private var adapter: com.example.homework_recyclerview.presentation.fragments.converter.ConvertorAdapter) :
     ItemTouchHelper.SimpleCallback(
         ItemTouchHelper.UP or ItemTouchHelper.DOWN or ItemTouchHelper.START or ItemTouchHelper.END,
         0

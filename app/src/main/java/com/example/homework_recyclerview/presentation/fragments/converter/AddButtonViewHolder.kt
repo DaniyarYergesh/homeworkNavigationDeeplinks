@@ -7,7 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.convertor.R
-import com.example.homework_recyclerview.Add1
+import com.example.homework_recyclerview.Add
 
 class AddButtonViewHolder(
     inflater: LayoutInflater,
@@ -24,7 +24,7 @@ class AddButtonViewHolder(
     private val addIconView = itemView.findViewById<ImageView>(R.id.path837)
     private val addCurrencyButton = itemView.findViewById<Button>(R.id.addButton)
 
-    fun bind(item: Add1) {
+    fun bind(item: Add) {
         addTextTextView.text = item.text
         addIconView.setBackgroundResource(item.flag)
         addCurrencyButton.setOnClickListener {

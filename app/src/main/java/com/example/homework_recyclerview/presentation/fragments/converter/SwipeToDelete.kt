@@ -3,7 +3,7 @@ package com.example.homework_recyclerview.presentation.fragments.converter
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 
-class SwipeToDelete(var adapter: com.example.homework_recyclerview.presentation.fragments.converter.Adapter) :
+class SwipeToDelete(var adapter: ConvertorAdapter) :
     ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
     override fun onMove(
         recyclerView: RecyclerView,
