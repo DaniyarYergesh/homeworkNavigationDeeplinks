@@ -43,7 +43,7 @@
         <entry key="app/src/main/res/layout/item.xml" value="0.33" />
         <entry key="app/src/main/res/layout/item2.xml" value="0.16802536231884058" />
         <entry key="app/src/main/res/layout/item_btn_add_rv.xml" value="0.32760416666666664" />
-        <entry key="app/src/main/res/layout/item_currency_rv.xml" value="0.32760416666666664" />
+        <entry key="app/src/main/res/layout/item_currency_rv.xml" value="0.67" />
         <entry key="app/src/main/res/layout/layout_fragment_convertor.xml" value="0.32760416666666664" />
         <entry key="app/src/main/res/layout/layout_fragment_movie_details.xml" value="0.1" />
         <entry key="app/src/main/res/layout/layout_fragment_movies.xml" value="0.33" />

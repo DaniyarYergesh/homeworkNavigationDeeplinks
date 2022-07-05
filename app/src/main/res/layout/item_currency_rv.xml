@@ -1,52 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <View
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
         android:layout_width="52dp"
         android:layout_height="52dp"
-        android:background="@drawable/rectangle_3"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="339dp"
-        />
+        app:layout_constraintBottom_toBottomOf="@+id/textField"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:id="@+id/currencyFlag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/image_1" />
+    </androidx.cardview.widget.CardView>
+
     <TextView
         android:id="@+id/currencyType"
-        android:layout_width="185dp"
-        android:layout_height="26dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="@string/currencyType"
         android:textAppearance="@style/currencyStyle"
-        android:layout_marginTop="68dp"
-        android:layout_marginStart="205dp"
-        />
-
-
-    <ImageView
-        android:id="@+id/currencyFlag"
-        android:layout_width="52dp"
-        android:layout_height="28.55dp"
-        android:background="@drawable/image_1"
-        android:layout_marginTop="33dp"
-        android:layout_marginStart="339dp"
-        />
+        app:layout_constraintEnd_toEndOf="@+id/textField"
+        app:layout_constraintTop_toBottomOf="@+id/textField" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textField"
-        android:layout_width="307dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_marginHorizontal="8dp"
         android:layout_height="62dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="20dp"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        app:layout_constraintEnd_toStartOf="@+id/cardView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/currencyText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:textAppearance="@style/currencyStyle"
-            />
-
+            android:textAppearance="@style/currencyStyle" />
     </com.google.android.material.textfield.TextInputLayout>
-
-
-</androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

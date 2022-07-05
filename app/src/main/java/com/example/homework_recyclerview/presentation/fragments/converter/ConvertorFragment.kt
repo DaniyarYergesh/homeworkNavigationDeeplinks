@@ -56,23 +56,22 @@ class ConvertorFragment : Fragment(), DeleteDialogCallback,
 
         setupFun()
         onOptionsItemSelected1()
+        setupFirstCurrency()
 
-        viewModel.currencyList.observe(viewLifecycleOwner){
+        viewModel.currencyList.observe(viewLifecycleOwner) {
             adapter.submitList(it)
-            adapter.notifyDataSetChanged()
         }
+    }
 
-
-
+    private fun setupFirstCurrency() {
+        binding.currencyFlag.setImageResource(R.drawable.image_1)
     }
 
 
     private fun setupFun() {
-
-        val myLambda: () -> Unit =
-            {
-                BottomSheetDialog().show(childFragmentManager, null)
-            }
+        val myLambda: () -> Unit = {
+            BottomSheetDialog().show(childFragmentManager, null)
+        }
 
         val myLambda2: (Currency, Int) -> Unit = { item, position ->
             deletedCurrency = item
@@ -114,9 +113,11 @@ class ConvertorFragment : Fragment(), DeleteDialogCallback,
 
             override fun afterTextChanged(s: Editable?) {
                 val text = s.toString()
+                if (text.length > Int.MAX_VALUE.toString().length - 1) return
                 if (text.isNotBlank()) {
                     viewModel.setBalance(text.toInt())
                 }
+                adapter.submitList(viewModel.currencyList.value)
             }
         }
         )
