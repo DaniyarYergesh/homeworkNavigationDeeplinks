@@ -99,7 +99,7 @@ class ConvertorFragment : Fragment(), DeleteDialogCallback,
         myRecyclerView.adapter = adapter
         myRecyclerView.layoutManager = layoutManager
 
-        val itemTouchHelper = ItemTouchHelper(DragDropMove(adapter!!))
+        val itemTouchHelper = ItemTouchHelper(DragDropMove(adapter))
         itemTouchHelper.attachToRecyclerView(myRecyclerView)
 
 
@@ -117,7 +117,6 @@ class ConvertorFragment : Fragment(), DeleteDialogCallback,
                 if (text.isNotBlank()) {
                     viewModel.setBalance(text.toInt())
                 }
-                adapter.submitList(viewModel.currencyList.value)
             }
         }
         )
@@ -160,6 +159,7 @@ class ConvertorFragment : Fragment(), DeleteDialogCallback,
                     true
                 }
                 R.id.drop_sorting -> {
+                    chosenIndex = -1
                     viewModel.sortByID()
                     true
                 }
@@ -213,23 +213,22 @@ class ConvertorFragment : Fragment(), DeleteDialogCallback,
         costRespectiveToTenge: TextInputEditText,
         res: Int
     ) {
-
-
         val newItem = Currency(
             counter++,
-            kzCurrency.text.toString().toInt() / Integer.parseInt(costRespectiveToTenge.text.toString()),
+            kzCurrency.text.toString().toInt()
+                    / Integer.parseInt(costRespectiveToTenge.text.toString()),
             nameOfCurrency.text.toString(),
             res,
             Integer.parseInt(costRespectiveToTenge.text.toString()))
 
 
-        if (chosenIndex == -1) viewModel.addNewItem(newItem, adapter!!.itemCount)
+        if (chosenIndex == -1) viewModel.addNewItem(newItem, adapter.itemCount)
 
         if (chosenIndex == 0) viewModel.getPositionType(newItem)
 
         if (chosenIndex == 1) viewModel.getPositionName(newItem)
 
-        scrollBottom(adapter?.itemCount ?: 0)
+        scrollBottom(adapter.itemCount)
     }
 
     override fun onDestroyView() {

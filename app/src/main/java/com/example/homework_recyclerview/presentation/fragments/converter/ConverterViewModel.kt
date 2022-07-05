@@ -8,7 +8,7 @@ class MainViewModel: ViewModel() {
 
     private val _currencyList = MutableLiveData(ListOfCurrencies.currencyList)
 
-    val currencyList : LiveData<List<Currency>> =
+    val currencyList:LiveData<List<Currency>> =
         Transformations.map(_currencyList) { it.toList() }
 
     private val _balance = MutableLiveData(0)
@@ -18,7 +18,8 @@ class MainViewModel: ViewModel() {
         _balance.value = value
     }
 
-    fun addNewItem(newItem: Currency, position: Int) = _currencyList.value!!.add(position, newItem)
+    fun addNewItem(newItem: Currency, position: Int) =
+        _currencyList.value!!.add(position, newItem)
 
     fun deleteCurrency(currency: Currency) = _currencyList.value!!.remove(currency)
 

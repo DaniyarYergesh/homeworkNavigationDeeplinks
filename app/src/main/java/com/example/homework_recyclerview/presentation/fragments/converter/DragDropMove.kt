@@ -10,10 +10,8 @@ interface CurrencyAdapterItemTouchHelper{
 }
 
 class DragDropMove(private var adapter: CurrencyAdapterItemTouchHelper) :
-    ItemTouchHelper.SimpleCallback(
-        ItemTouchHelper.UP or ItemTouchHelper.DOWN or ItemTouchHelper.START or ItemTouchHelper.END,
-        0
-    ) {
+
+    ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN or ItemTouchHelper.START or ItemTouchHelper.END, 0) {
 
     override fun onMove(
         recyclerView: RecyclerView,
