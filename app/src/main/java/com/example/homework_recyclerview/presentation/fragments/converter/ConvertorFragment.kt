@@ -9,42 +9,41 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import com.example.convertor.R
 import com.example.convertor.databinding.LayoutFragmentConvertorBinding
 import com.example.homework_recyclerview.domain.repository.Currency
+import com.example.homework_recyclerview.presentation.fragments.converter.ListOfCurrencies.counter
 import com.example.homework_recyclerview.presentation.fragments.converter.bottomSheet_Dialog.BottomSheetDialog
 import com.example.homework_recyclerview.presentation.fragments.converter.bottomSheet_Dialog.SelectCurrencyBottomSheet
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
-import homework_recyclerview.DeleteDialogCallback
-import homework_recyclerview.DeleteDialogFragment
+import com.example.homework_recyclerview.presentation.fragments.converter.bottomSheet_Dialog.DeleteDialogCallback
+import com.example.homework_recyclerview.presentation.fragments.converter.bottomSheet_Dialog.DeleteDialogFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ConvertorFragment : Fragment(), DeleteDialogCallback,
     BottomSheetDialog.SecondBottomSheet {
 
+    private val viewModel: MainViewModel by viewModel()
     private var _binding: LayoutFragmentConvertorBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: MainViewModel by viewModel()
-    private var deletedCurrency: Currency? = null
-    private var positionOfDeletedItem: Int? = null
+
     private lateinit var toolbar: androidx.appcompat.widget.Toolbar
-    private var chosenIndex = -1
     private lateinit var adapter: ConvertorAdapter
-    private var layoutManager: LinearLayoutManager? = null
-
     private lateinit var kzCurrency: TextInputEditText
-    private var counter: Int = 0
+    private lateinit var dialog: DialogFragment
+    private lateinit var deletedCurrency: Currency
+    private lateinit var layoutManager: LinearLayoutManager
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    private var positionOfDeletedItem = 0
+    private var counter: Int = 0
+    private var chosenIndex = -1
+
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = LayoutFragmentConvertorBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -58,25 +57,22 @@ class ConvertorFragment : Fragment(), DeleteDialogCallback,
         onOptionsItemSelected1()
         setupFirstCurrency()
 
-        viewModel.currencyList.observe(viewLifecycleOwner) {
+        viewModel._currencyList.observe(viewLifecycleOwner) {
             adapter.submitList(it)
+            Log.d("TAG","observe called ${it.size}")
         }
+
     }
 
     private fun setupFirstCurrency() {
         binding.currencyFlag.setImageResource(R.drawable.image_1)
     }
 
-
     private fun setupFun() {
-        val myLambda: () -> Unit = {
-            BottomSheetDialog().show(childFragmentManager, null)
-        }
 
-        val myLambda2: (Currency, Int) -> Unit = { item, position ->
+        val myLambda: (Currency, Int) -> Unit = { item, position ->
             deletedCurrency = item
             positionOfDeletedItem = position
-
             toolbar.title = "$position Item Selected"
             toolbar.setBackgroundColor(
                 ContextCompat.getColor(
@@ -91,7 +87,7 @@ class ConvertorFragment : Fragment(), DeleteDialogCallback,
 
         }
 
-        adapter = ConvertorAdapter(myLambda, myLambda2, viewModel.balance)
+        adapter = ConvertorAdapter(viewModel::deleteCurrency,viewModel::moveItem, myLambda, viewModel.balance)
 
         layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         val myRecyclerView = binding.recyclerView
@@ -104,6 +100,7 @@ class ConvertorFragment : Fragment(), DeleteDialogCallback,
 
 
         kzCurrency = binding.currencyTextKaz
+
         kzCurrency.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
@@ -117,14 +114,10 @@ class ConvertorFragment : Fragment(), DeleteDialogCallback,
                 if (text.isNotBlank()) {
                     viewModel.setBalance(text.toInt())
                 }
-            }
-        }
-        )
+            } })
 
 
     }
-
-    private lateinit var dialog: DialogFragment
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
@@ -178,7 +171,7 @@ class ConvertorFragment : Fragment(), DeleteDialogCallback,
             override fun getVerticalSnapPreference(): Int = SNAP_TO_START
         }
         smoothScroller.targetPosition = n
-        layoutManager?.startSmoothScroll(smoothScroller) // плавная прокрутка
+        layoutManager.startSmoothScroll(smoothScroller) // плавная прокрутка
     }
 
     private fun deleteItems() {
@@ -192,15 +185,9 @@ class ConvertorFragment : Fragment(), DeleteDialogCallback,
     }
 
     override fun onDeleteButton() {
-        viewModel.deleteCurrency(deletedCurrency!!)
-        Snackbar.make(
-            binding.recyclerView,
-            "Item Deleted",
-            Snackbar.LENGTH_SHORT
-        )
-            .setAction("Undo") {
-                viewModel.addNewItem(deletedCurrency!!, positionOfDeletedItem!!)
-            }
+        viewModel.deleteCurrency(deletedCurrency)
+        Snackbar.make(binding.recyclerView, "Item Deleted", Snackbar.LENGTH_SHORT)
+            .setAction("Undo") { viewModel.addNewItem(deletedCurrency, positionOfDeletedItem!!) }
             .show()
     }
 
@@ -208,27 +195,20 @@ class ConvertorFragment : Fragment(), DeleteDialogCallback,
         SelectCurrencyBottomSheet().show(fragmentManager, null)
     }
 
-    override fun addNewItemFromBottomSheet(
-        nameOfCurrency: TextInputEditText,
-        costRespectiveToTenge: TextInputEditText,
-        res: Int
-    ) {
+    override fun addNewItemFromBottomSheet(nameOfCurrency: TextInputEditText, costRespectiveToTenge: TextInputEditText, res: Int) {
         val newItem = Currency(
             counter++,
-            kzCurrency.text.toString().toInt()
-                    / Integer.parseInt(costRespectiveToTenge.text.toString()),
+            ((kzCurrency.text.toString().toIntOrNull() ?: 0)
+                    / Integer.parseInt(costRespectiveToTenge.text.toString())),
             nameOfCurrency.text.toString(),
             res,
             Integer.parseInt(costRespectiveToTenge.text.toString()))
 
-
-        if (chosenIndex == -1) viewModel.addNewItem(newItem, adapter.itemCount)
-
+        if (chosenIndex == -1) viewModel.addNewItem(newItem, viewModel._currencyList.value!!.size)
         if (chosenIndex == 0) viewModel.getPositionType(newItem)
-
         if (chosenIndex == 1) viewModel.getPositionName(newItem)
-
         scrollBottom(adapter.itemCount)
+
     }
 
     override fun onDestroyView() {

@@ -7,12 +7,11 @@ import com.example.convertor.databinding.ItemCurrencyRvBinding
 import com.example.homework_recyclerview.domain.repository.Currency
 
 class CurrencyViewHolder(
-    private var function: (Currency, Int) -> Unit,
     private val binding: ItemCurrencyRvBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
 
-    fun bind(item: Currency, position: Int, value:LiveData<Int>) {
+    fun bind(item: Currency, position: Int, value:LiveData<Int>, function: (Currency, Int) -> Unit) {
 
         binding.currencyText.setText(item.text.toString())
         binding.currencyType.text = item.type
