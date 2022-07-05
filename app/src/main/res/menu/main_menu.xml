@@ -2,6 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/add_new_currency"
+        android:title="добавить валюту">
+
+    </item>
+    <item
         android:id="@+id/sorting_by"
         android:title="Сортировать по">
         <menu>
@@ -22,6 +27,7 @@
         android:title="Сбросить сортировку">
 
     </item>
+
     <item
         android:id="@+id/menu_del"
         android:icon="@android:drawable/ic_menu_delete"

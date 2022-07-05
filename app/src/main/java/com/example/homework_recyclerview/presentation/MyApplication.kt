@@ -1,7 +1,7 @@
 package com.example.homework_recyclerview.presentation
 
 import android.app.Application
-import com.example.convertor.di.mainModule
+import com.example.homework_recyclerview.di.mainModule
 import org.koin.core.context.startKoin
 import org.koin.dsl.module
 

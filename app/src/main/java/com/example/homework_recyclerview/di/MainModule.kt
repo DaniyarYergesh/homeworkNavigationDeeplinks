@@ -1,7 +1,11 @@
-package com.example.convertor.di
+package com.example.homework_recyclerview.di
 
+import com.example.homework_recyclerview.presentation.fragments.converter.ListOfCurrencies
+import com.example.homework_recyclerview.presentation.fragments.converter.MainViewModel
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val mainModule = module {
-
+    factory { ListOfCurrencies() }
+    viewModel{ MainViewModel(get())}
 }

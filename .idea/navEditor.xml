@@ -41,6 +41,15 @@
                             <option name="y" value="98" />
                           </Point>
                         </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_moviesFragment_to_fragmentMovieDetails">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
                       </LayoutPositions>
                     </value>
                   </entry>
@@ -63,6 +72,18 @@
                           <Point>
                             <option name="x" value="-31" />
                             <option name="y" value="88" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="selectCurrencyBottomSheet">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="25" />
+                            <option name="y" value="373" />
                           </Point>
                         </option>
                       </LayoutPositions>

@@ -4,12 +4,16 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 
 
-class DragDropMove(private var adapter: com.example.homework_recyclerview.presentation.fragments.converter.ConvertorAdapter) :
+interface CurrencyAdapterItemTouchHelper{
+    fun onItemMove(fromPosition:Int, toPosition:Int)
+    fun onDismiss(position: Int)
+}
+
+class DragDropMove(private var adapter: CurrencyAdapterItemTouchHelper) :
     ItemTouchHelper.SimpleCallback(
         ItemTouchHelper.UP or ItemTouchHelper.DOWN or ItemTouchHelper.START or ItemTouchHelper.END,
         0
     ) {
-
 
     override fun onMove(
         recyclerView: RecyclerView,
@@ -18,13 +22,15 @@ class DragDropMove(private var adapter: com.example.homework_recyclerview.presen
     ): Boolean {
         val from = viewHolder.adapterPosition
         val to = target.adapterPosition
-        adapter.moveItem(from, to)
+        adapter.onItemMove(from, to)
 
         return true
 
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+        val position = viewHolder.adapterPosition
+        adapter.onDismiss(position)
     }
 
     override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {

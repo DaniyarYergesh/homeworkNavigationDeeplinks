@@ -19,6 +19,6 @@ class CurrencyViewHolder(
             function(item, position)
             true
         }
-
     }
+
 }
