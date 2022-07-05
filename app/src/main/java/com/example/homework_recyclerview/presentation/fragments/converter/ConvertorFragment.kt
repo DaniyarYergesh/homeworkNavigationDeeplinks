@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
@@ -91,7 +92,7 @@ class ConvertorFragment : Fragment(), DeleteDialogCallback,
 
         }
 
-        adapter = ConvertorAdapter(myLambda, myLambda2)
+        adapter = ConvertorAdapter(myLambda, myLambda2, viewModel.balance)
 
         layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         val myRecyclerView = binding.recyclerView
@@ -114,7 +115,7 @@ class ConvertorFragment : Fragment(), DeleteDialogCallback,
             override fun afterTextChanged(s: Editable?) {
                 val text = s.toString()
                 if (text.isNotBlank()) {
-                    viewModel.updateCurrencyData(text)
+                    viewModel.setBalance(text.toInt())
                 }
             }
         }

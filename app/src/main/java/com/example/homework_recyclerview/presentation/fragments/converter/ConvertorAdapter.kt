@@ -2,6 +2,7 @@ package com.example.homework_recyclerview.presentation.fragments.converter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.example.convertor.databinding.ItemCurrencyRvBinding
@@ -12,7 +13,8 @@ import kotlinx.coroutines.launch
 
 class ConvertorAdapter(
     private val clickListener: () -> Unit,
-    private val function: (Currency, Int) -> Unit
+    private val function: (Currency, Int) -> Unit,
+    private val value: LiveData<Int>
 ) : ListAdapter<Currency, CurrencyViewHolder>(CustomerModelCallback()), CurrencyAdapterItemTouchHelper {
 
     val data = mutableListOf<Currency>()
@@ -23,7 +25,7 @@ class ConvertorAdapter(
     }
 
     override fun onBindViewHolder(holder: CurrencyViewHolder, position: Int) {
-        holder.bind(getItem(position), position)
+        holder.bind(getItem(position), position, value)
     }
 
     fun deleteItem(position: Int) {

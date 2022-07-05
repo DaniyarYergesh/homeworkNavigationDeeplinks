@@ -4,12 +4,19 @@ import androidx.lifecycle.*
 import com.example.homework_recyclerview.domain.repository.Currency
 import kotlinx.coroutines.launch
 
-class MainViewModel(private val dataSource: ListOfCurrencies): ViewModel() {
+class MainViewModel: ViewModel() {
 
-    private val _currencyList = MutableLiveData(dataSource.currencyList)
+    private val _currencyList = MutableLiveData(ListOfCurrencies.currencyList)
 
     val currencyList : LiveData<List<Currency>> =
         Transformations.map(_currencyList) { it.toList() }
+
+    private val _balance = MutableLiveData(0)
+    val balance : LiveData<Int> = _balance
+
+    fun setBalance(value:Int){
+        _balance.value = value
+    }
 
     fun addNewItem(newItem: Currency, position: Int) = _currencyList.value!!.add(position, newItem)
 
@@ -27,18 +34,6 @@ class MainViewModel(private val dataSource: ListOfCurrencies): ViewModel() {
     fun getPositionName(newItem: Currency) {
         _currencyList.value!!.add(newItem)
         _currencyList.value!!.sortBy { it.text }
-    }
-
-
-
-
-    fun updateCurrencyData(textTenge: String) {
-        for (item in _currencyList.value!!) {
-            viewModelScope.launch {
-                val currency = textTenge.toInt() / item.course
-                item.text = currency
-            }
-        }
     }
 
     fun sortByID()=_currencyList.value!!.sortBy { it.id }

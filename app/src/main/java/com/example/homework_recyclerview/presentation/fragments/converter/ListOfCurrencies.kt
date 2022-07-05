@@ -3,7 +3,8 @@ package com.example.homework_recyclerview.presentation.fragments.converter
 import com.example.convertor.R
 import com.example.homework_recyclerview.domain.repository.Currency
 
-class ListOfCurrencies {
+
+object ListOfCurrencies {
 
     var counter = 0
 
