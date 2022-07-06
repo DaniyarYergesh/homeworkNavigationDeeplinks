@@ -31,7 +31,6 @@ class ConvertorAdapter(
 
     override fun onItemMove(fromPosition: Int, toPosition: Int) {
         moveItem(fromPosition, toPosition)
-
     }
 
     override fun onDismiss(position: Int) {

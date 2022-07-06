@@ -50,6 +50,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/typeCurrencyCost"
                 android:layout_width="match_parent"
+                android:inputType="numberSigned"
                 android:layout_height="match_parent"
                 android:hint="Кол. тенге в валюте"
                 android:textAppearance="@style/currencyStyle" />

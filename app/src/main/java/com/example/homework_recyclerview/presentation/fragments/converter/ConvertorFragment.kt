@@ -15,13 +15,12 @@ import androidx.recyclerview.widget.LinearSmoothScroller
 import com.example.convertor.R
 import com.example.convertor.databinding.LayoutFragmentConvertorBinding
 import com.example.homework_recyclerview.domain.repository.Currency
-import com.example.homework_recyclerview.presentation.fragments.converter.ListOfCurrencies.counter
 import com.example.homework_recyclerview.presentation.fragments.converter.bottomSheet_Dialog.BottomSheetDialog
+import com.example.homework_recyclerview.presentation.fragments.converter.bottomSheet_Dialog.DeleteDialogCallback
+import com.example.homework_recyclerview.presentation.fragments.converter.bottomSheet_Dialog.DeleteDialogFragment
 import com.example.homework_recyclerview.presentation.fragments.converter.bottomSheet_Dialog.SelectCurrencyBottomSheet
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
-import com.example.homework_recyclerview.presentation.fragments.converter.bottomSheet_Dialog.DeleteDialogCallback
-import com.example.homework_recyclerview.presentation.fragments.converter.bottomSheet_Dialog.DeleteDialogFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ConvertorFragment : Fragment(), DeleteDialogCallback,
@@ -57,7 +56,7 @@ class ConvertorFragment : Fragment(), DeleteDialogCallback,
         onOptionsItemSelected1()
         setupFirstCurrency()
 
-        viewModel._currencyList.observe(viewLifecycleOwner) {
+        viewModel.currencyList.observe(viewLifecycleOwner) {
             adapter.submitList(it)
             Log.d("TAG","observe called ${it.size}")
         }
@@ -98,16 +97,10 @@ class ConvertorFragment : Fragment(), DeleteDialogCallback,
         val itemTouchHelper = ItemTouchHelper(DragDropMove(adapter))
         itemTouchHelper.attachToRecyclerView(myRecyclerView)
 
-
         kzCurrency = binding.currencyTextKaz
-
         kzCurrency.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            }
-
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable?) {
                 val text = s.toString()
                 if (text.length > Int.MAX_VALUE.toString().length - 1) return
@@ -187,7 +180,7 @@ class ConvertorFragment : Fragment(), DeleteDialogCallback,
     override fun onDeleteButton() {
         viewModel.deleteCurrency(deletedCurrency)
         Snackbar.make(binding.recyclerView, "Item Deleted", Snackbar.LENGTH_SHORT)
-            .setAction("Undo") { viewModel.addNewItem(deletedCurrency, positionOfDeletedItem!!) }
+            .setAction("Undo") { viewModel.addCurrency(deletedCurrency) }
             .show()
     }
 
@@ -196,19 +189,17 @@ class ConvertorFragment : Fragment(), DeleteDialogCallback,
     }
 
     override fun addNewItemFromBottomSheet(nameOfCurrency: TextInputEditText, costRespectiveToTenge: TextInputEditText, res: Int) {
-        val newItem = Currency(
-            counter++,
-            ((kzCurrency.text.toString().toIntOrNull() ?: 0)
-                    / Integer.parseInt(costRespectiveToTenge.text.toString())),
-            nameOfCurrency.text.toString(),
-            res,
-            Integer.parseInt(costRespectiveToTenge.text.toString()))
-
-        if (chosenIndex == -1) viewModel.addNewItem(newItem, viewModel._currencyList.value!!.size)
-        if (chosenIndex == 0) viewModel.getPositionType(newItem)
-        if (chosenIndex == 1) viewModel.getPositionName(newItem)
+        Log.e(TAG, "add new item from bottom sheet called")
+        val rate = Integer.parseInt(costRespectiveToTenge.text.toString())
+        val currencyValue = (kzCurrency.text.toString().toIntOrNull() ?: 0) / rate
+        val newItem = Currency(counter++, currencyValue, nameOfCurrency.text.toString(), res, rate)
+        viewModel.addCurrency(newItem)
+        adapter.notifyDataSetChanged()
+        Log.e(TAG, "currencies list after calling add -> ${viewModel.currencyList.value?.size}")
+        if (chosenIndex == -1) viewModel.sortByID()//viewModel.addNewItem(newItem, viewModel._currencyList.value!!.size)
+        if (chosenIndex == 0) viewModel.sortByName()//viewModel.getPositionType(newItem)
+        if (chosenIndex == 1) viewModel.sortByPrice()//viewModel.getPositionName(newItem)
         scrollBottom(adapter.itemCount)
-
     }
 
     override fun onDestroyView() {
@@ -216,4 +207,7 @@ class ConvertorFragment : Fragment(), DeleteDialogCallback,
         _binding = null
     }
 
+    companion object {
+        private const val TAG = "ConverterFragment"
+    }
 }
