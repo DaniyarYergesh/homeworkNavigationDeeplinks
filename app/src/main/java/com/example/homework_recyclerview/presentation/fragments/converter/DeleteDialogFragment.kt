@@ -1,4 +1,4 @@
-package com.example.homework_recyclerview.presentation.fragments.converter.bottomSheet_Dialog
+package com.example.homework_recyclerview.presentation.fragments.converter.addNewCurrencyBottomSheet
 
 import android.os.Bundle
 import android.view.View

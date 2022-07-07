@@ -1,20 +1,23 @@
 package com.example.homework_recyclerview.presentation.fragments.converter
 
-import android.util.Log
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.homework_recyclerview.data.CurrencyRepository
 import com.example.homework_recyclerview.domain.repository.Currency
 import kotlinx.coroutines.launch
 
-class MainViewModel : ViewModel() {
+class MainViewModel(
+    private val repository: CurrencyRepository
+    ) : ViewModel() {
 
-//    val _currencyList = MutableLiveData<MutableList<Currency>>(mutableListOf())
+    lateinit var rates: Map<String, Double>
+
 
     private var data = ListOfCurrencies.currencyList
     private val _currencyList = MutableLiveData(data)
     val currencyList: LiveData<ArrayList<Currency>> = _currencyList
-
-//    val currencyList:LiveData<List<Currency>> =
-//        Transformations.map(_currencyList) { it.toList() }
 
     private val _balance = MutableLiveData(0)
     val balance: LiveData<Int> = _balance
@@ -25,34 +28,69 @@ class MainViewModel : ViewModel() {
 
     fun addCurrency(newItem: Currency) {
         data.add(newItem)
-        _currencyList.value = data
+        val newData = arrayListOf<Currency>()
+        newData.addAll(data)
+        _currencyList.value = newData
     }
-
-//    fun addCurrency(currency: Currency) {
-//        Log.e("ConverterViewModel", "before add currency list -> ${_currencyList.value?.size}")
-//        _currencyList.value?.add(currency)
-//        Log.e("ConverterViewModel", "after add currency list -> ${_currencyList.value?.size}")
-//    }
 
     fun deleteCurrency(currency: Currency) {
         data.remove(currency)
+        val newData = arrayListOf<Currency>()
+        newData.addAll(data)
+        _currencyList.value = newData
+    }
+
+    fun sortByID() {
+        data.sortBy { it.id }
+        val newData = arrayListOf<Currency>()
+        newData.addAll(data)
         _currencyList.value = data
     }
 
-    fun sortByID() = _currencyList.value!!.sortBy { it.id }
-
-    fun sortByName() = _currencyList.value!!.sortBy { it.type }
-
-    fun sortByPrice() = _currencyList.value!!.sortBy { it.text }
-
-    fun moveItem(from: Int, to: Int) {
-        val fromEmoji = _currencyList.value!![from]
-        _currencyList.value!!.removeAt(from)
-        if (to < from) {
-            _currencyList.value!!.add(to, fromEmoji)
-        } else {
-            _currencyList.value!!.add(to - 1, fromEmoji)
-        }
+    fun sortByName() {
+        data.sortBy { it.type }
+        val newData = arrayListOf<Currency>()
+        newData.addAll(data)
+        _currencyList.value = newData
     }
 
+    fun sortByPrice() {
+        data.sortBy { it.text }
+        val newData = arrayListOf<Currency>()
+        newData.addAll(data)
+        _currencyList.value = newData
+    }
+
+    fun moveItem(from: Int, to: Int) {
+        val fromEmoji = data[from]
+        data.removeAt(from)
+        val newData = arrayListOf<Currency>()
+        newData.addAll(data)
+
+        if (to < from) {
+            newData.add(to, fromEmoji)
+        }
+        else {
+            newData.add(to - 1, fromEmoji)
+        }
+        _currencyList.value = newData
+    }
+
+    init {
+        loadCurrencyRates()
+    }
+
+    fun loadCurrencyRates(){
+        viewModelScope.launch {
+            val results = repository.getCurrencyRates()
+            rates = results.rates
+
+
+//            for (key in rates.keys) {
+//                val coef = rates[key]
+//                Log.d("TAG","key = $key, coef = $coef")
+//            }
+
+        }
+    }
 }
