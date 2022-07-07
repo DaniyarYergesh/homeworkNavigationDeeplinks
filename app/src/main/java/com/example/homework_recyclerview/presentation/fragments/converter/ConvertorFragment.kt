@@ -20,11 +20,12 @@ import com.example.homework_recyclerview.presentation.fragments.converter.addNew
 import com.example.homework_recyclerview.presentation.fragments.converter.addNewCurrencyBottomSheet.DeleteDialogFragment
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ConvertorFragment : Fragment(), DeleteDialogCallback{
 
-    private val viewModel: MainViewModel by viewModel()
+    private val viewModel: MainViewModel by sharedViewModel()
     private var _binding: LayoutFragmentConvertorBinding? = null
     private val binding get() = _binding!!
 
@@ -42,6 +43,7 @@ class ConvertorFragment : Fragment(), DeleteDialogCallback{
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = LayoutFragmentConvertorBinding.inflate(inflater, container, false)
+        Log.e(TAG, "${viewModel}")
         return binding.root
     }
 

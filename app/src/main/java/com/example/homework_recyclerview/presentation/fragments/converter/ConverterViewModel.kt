@@ -17,9 +17,9 @@ class MainViewModel(
     var listOfRates: MutableLiveData<List<String>> = MutableLiveData(emptyList())
 
 
-    private var data = ListOfCurrencies.currencyList
-    private val _currencyList = MutableLiveData(data)
-    val currencyList: LiveData<ArrayList<Currency>> = _currencyList
+    private var data = mutableListOf<Currency>()
+    private val _currencyList = MutableLiveData<List<Currency>>(data)
+    val currencyList: LiveData<List<Currency>> = _currencyList
 
     private val _balance = MutableLiveData(0)
     val balance: LiveData<Int> = _balance
@@ -32,8 +32,8 @@ class MainViewModel(
         val newCurrency = Currency(Constants.id++, 0.0, key, R.drawable.image_1_3,value)
         //_newCurrencyLiveData.value = newCurrency
         data.add(newCurrency)
-        val newData = arrayListOf<Currency>()
-        newData.addAll(data)
+//        val newData = arrayListOf<Currency>()
+//        newData.addAll(data)
         _currencyList.value = data
     }
 
