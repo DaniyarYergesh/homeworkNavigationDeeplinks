@@ -1,22 +1,22 @@
 package com.example.homework_recyclerview.presentation.fragments.converter.addNewCurrencyBottomSheet
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.convertor.databinding.ItemAddCurrencyRvBinding
-import com.example.homework_recyclerview.domain.repository.Currency
 
-class NewCurrencyAdapter(val onClick:()->Unit):ListAdapter<Currency, NewCurrencyAdapter.NewCurrencyViewHolder>
-    (CustomerModelCallback())
-{
+class NewCurrencyAdapter(private val mList: List<String>, private val onClick: (String) -> Unit) :
+    RecyclerView.Adapter<NewCurrencyAdapter.NewCurrencyViewHolder>() {
 
-    inner class NewCurrencyViewHolder(private val binding: ItemAddCurrencyRvBinding):RecyclerView.ViewHolder(binding.root){
-        fun bind(item: Currency, onClick: () -> Unit){
-            binding.currencyName.text = item.type
-            binding.currencyName.setOnClickListener{
-                onClick
+    val data = mutableListOf<String>()
+
+    inner class NewCurrencyViewHolder(private val binding: ItemAddCurrencyRvBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: String, onClick: (String) -> Unit) {
+            binding.currencyName.text = item
+            binding.currencyName.setOnClickListener {
+                onClick(item)
             }
         }
     }
@@ -27,16 +27,16 @@ class NewCurrencyAdapter(val onClick:()->Unit):ListAdapter<Currency, NewCurrency
     }
 
     override fun onBindViewHolder(holder: NewCurrencyViewHolder, position: Int) {
-        holder.bind(getItem(position), onClick)
+        holder.bind(data[position], onClick)
     }
 
 
-}
+    fun setItems(names: List<String>) {
+        data.addAll(names)
+        notifyDataSetChanged()
+        Log.d("NewCurrencyAdapter", "list of Rates = $mList")
+    }
 
-class CustomerModelCallback : DiffUtil.ItemCallback<Currency>() {
-    override fun areItemsTheSame(oldItem: Currency, newItem: Currency): Boolean =
-        oldItem.id == newItem.id
+    override fun getItemCount() = data.size
 
-    override fun areContentsTheSame(oldItem: Currency, newItem: Currency): Boolean =
-        oldItem == newItem
 }

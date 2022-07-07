@@ -20,8 +20,8 @@ class CurrencyViewHolder(
             function(item, position)
             true
         }
-        value.observe(itemView.context as LifecycleOwner){
-            val currency = it.toDouble() / item.course
+        value.observe(itemView.context as LifecycleOwner) {
+            val currency = it.toDouble() * item.course
             binding.currencyText.setText("%.4f".format(currency))
         }
     }

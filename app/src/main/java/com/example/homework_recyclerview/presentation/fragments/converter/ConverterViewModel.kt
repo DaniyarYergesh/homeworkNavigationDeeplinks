@@ -1,18 +1,20 @@
 package com.example.homework_recyclerview.presentation.fragments.converter
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import android.util.Log
+import androidx.lifecycle.*
+import com.example.convertor.R
 import com.example.homework_recyclerview.data.CurrencyRepository
 import com.example.homework_recyclerview.domain.repository.Currency
+import com.example.homework_recyclerview.utils.Constants
 import kotlinx.coroutines.launch
 
 class MainViewModel(
     private val repository: CurrencyRepository
     ) : ViewModel() {
 
-    lateinit var rates: Map<String, Double>
+    var rates: Map<String, Double> = mapOf()
+
+    var listOfRates: MutableLiveData<List<String>> = MutableLiveData(emptyList())
 
 
     private var data = ListOfCurrencies.currencyList
@@ -21,6 +23,19 @@ class MainViewModel(
 
     private val _balance = MutableLiveData(0)
     val balance: LiveData<Int> = _balance
+
+
+//    private val _newCurrencyLiveData = MutableLiveData<Currency>()
+//    val newCurrencyLiveData:LiveData<Currency> = _newCurrencyLiveData
+
+    fun addNewRate(key:String, value:Double){
+        val newCurrency = Currency(Constants.id++, 0.0, key, R.drawable.image_1_3,value)
+        //_newCurrencyLiveData.value = newCurrency
+        data.add(newCurrency)
+        val newData = arrayListOf<Currency>()
+        newData.addAll(data)
+        _currencyList.value = data
+    }
 
     fun setBalance(value: Int) {
         _balance.value = value
@@ -76,21 +91,12 @@ class MainViewModel(
         _currencyList.value = newData
     }
 
-    init {
-        loadCurrencyRates()
-    }
-
     fun loadCurrencyRates(){
         viewModelScope.launch {
             val results = repository.getCurrencyRates()
             rates = results.rates
-
-
-//            for (key in rates.keys) {
-//                val coef = rates[key]
-//                Log.d("TAG","key = $key, coef = $coef")
-//            }
-
+            listOfRates.value = rates.keys.toList()
+            Log.d("ConverterViewModel", "listOfRates from retro=$listOfRates")
         }
     }
 }

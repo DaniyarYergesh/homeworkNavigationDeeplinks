@@ -22,8 +22,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class ConvertorFragment : Fragment(), DeleteDialogCallback,
-    NewCurrencyFragment.SecondBottomSheet {
+class ConvertorFragment : Fragment(), DeleteDialogCallback{
 
     private val viewModel: MainViewModel by viewModel()
     private var _binding: LayoutFragmentConvertorBinding? = null
@@ -37,7 +36,7 @@ class ConvertorFragment : Fragment(), DeleteDialogCallback,
     private lateinit var layoutManager: LinearLayoutManager
 
     private var positionOfDeletedItem = 0
-    private var counter: Int = 0
+
     private var chosenIndex = -1
 
 
@@ -55,6 +54,7 @@ class ConvertorFragment : Fragment(), DeleteDialogCallback,
         onOptionsItemSelected1()
         setupFirstCurrency()
 
+
         viewModel.currencyList.observe(viewLifecycleOwner) {
             adapter.submitList(it)
             adapter.notifyDataSetChanged()
@@ -67,7 +67,6 @@ class ConvertorFragment : Fragment(), DeleteDialogCallback,
     }
 
     private fun setupFun() {
-
         val myLambda: (Currency, Int) -> Unit = { item, position ->
             deletedCurrency = item
             positionOfDeletedItem = position
@@ -82,6 +81,7 @@ class ConvertorFragment : Fragment(), DeleteDialogCallback,
             toolbar.menu.findItem(R.id.sorting_by).isVisible = false
             toolbar.menu.findItem(R.id.drop_sorting).isVisible = false
             Log.i("MainActivity", "$deletedCurrency")
+
 
         }
 
@@ -178,25 +178,13 @@ class ConvertorFragment : Fragment(), DeleteDialogCallback,
     }
 
     override fun onDeleteButton() {
-        viewModel.deleteCurrency(deletedCurrency)
 
+        viewModel.deleteCurrency(deletedCurrency)
         Snackbar.make(binding.recyclerView, "Item Deleted", Snackbar.LENGTH_SHORT)
             .setAction("Undo") { viewModel.addCurrency(deletedCurrency) }
             .show()
 
         sortingCurrencies(chosenIndex)
-    }
-
-    override fun addNewItemFromBottomSheet(nameOfCurrency: TextInputEditText, costRespectiveToTenge: TextInputEditText, res: Int) {
-        Log.e(TAG, "add new item from bottom sheet called")
-        val rate = Integer.parseInt(costRespectiveToTenge.text.toString())
-        val currencyValue = (kzCurrency.text.toString().toIntOrNull() ?: 0) / rate
-        val newItem = Currency(counter++, currencyValue, nameOfCurrency.text.toString(), res, rate)
-
-        viewModel.addCurrency(newItem)
-
-        sortingCurrencies(chosenIndex)
-        scrollBottom(adapter.itemCount)
     }
 
     override fun onDestroyView() {
@@ -213,4 +201,5 @@ class ConvertorFragment : Fragment(), DeleteDialogCallback,
         if (sortBy == 0) viewModel.sortByName()//viewModel.getPositionType(newItem)
         if (sortBy == 1) viewModel.sortByPrice()//viewModel.getPositionName(newItem)
     }
+
 }
